@@ -8,8 +8,8 @@ const segmentRoutes = require("./segmentRoutes");
 const router = Router();
 router.use("/login", loginRoutes);
 router.use("/users", userRoutes);
-router.use("/event", eventRoutes);
-router.use("/session", sessionRoutes);
-router.use("/segment", segmentRoutes);
+router.use("/events", eventRoutes);
+router.use("/sessions", sessionRoutes);
+router.use("/segments", segmentRoutes);
 
 module.exports = router;

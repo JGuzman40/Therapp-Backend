@@ -1,3 +1,4 @@
+// models/Session.js
 const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
@@ -5,48 +6,75 @@ module.exports = (sequelize) => {
     "Session",
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
-        autoIncrement: true,
         allowNull: false,
       },
-    eventId: {
-  type: DataTypes.UUID,
-  references: {
-    model: "Events",
-    key: "id",
-  },
-},
+      eventId: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "Events",
+          key: "id",
+        },
+      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      days: {
-        type: DataTypes.STRING, // Para los días, si es necesario
-        allowNull: true,
+      sessionType: {
+        type: DataTypes.ENUM("individual", "grupal"),
+        allowNull: false,
+        defaultValue: "grupal",
       },
       dates: {
-        type: DataTypes.TEXT, // Almacenar como texto
-        allowNull: true,
+        type: DataTypes.TEXT, // JSON.stringify([fecha1, fecha2...])
+        allowNull: false,
         get() {
           const value = this.getDataValue("dates");
-          return value ? JSON.parse(value) : []; // Convertir de JSON a array
+          return value ? JSON.parse(value) : [];
         },
         set(value) {
-          this.setDataValue("dates", JSON.stringify(value)); // Convertir de array a JSON
+          this.setDataValue("dates", JSON.stringify(value));
         },
       },
       time: {
-        type: DataTypes.TIME, // Formato de hora HH:MM:SS
+        type: DataTypes.TIME,
         allowNull: false,
+      },
+      duration: {
+        type: DataTypes.INTEGER, // en minutos
+        allowNull: true,
+        validate: {
+          min: 1,
+        },
       },
       meetingLink: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          isUrl: true,
+        },
       },
       message: {
         type: DataTypes.TEXT,
         allowNull: true,
+      },
+      notify: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+
+    // participantId (si es individual)
+      participantId: {
+        type: DataTypes.UUID,
+        allowNull: true,
+        references: {
+          model: "Users",
+          key: "id",
+        },
       },
     },
     {
