@@ -37,7 +37,7 @@ let capsEntries = entries.map((entry) => [
 sequelize.models = Object.fromEntries(capsEntries);
 
 // Modelos
-const { User, Event, Segment, Reflection, Bitacora, Session } =
+const { User, Event, Segment, Session } =
   sequelize.models;
 
 // Definir las relaciones
@@ -61,19 +61,6 @@ Segment.belongsTo(Event, { as: "Evento", foreignKey: "eventId" });
 // Un evento tiene muchos participantes
 Event.hasMany(User, { as: "Participantes", foreignKey: "eventId" });
 User.belongsTo(Event, { as: "Evento", foreignKey: "eventId" });
-
-// Un participante tiene muchas reflexiones
-User.hasMany(Reflection, { as: "Reflexiones", foreignKey: "participanteId" });
-Reflection.belongsTo(User, {
-  as: "Participante",
-  foreignKey: "participanteId",
-});
-// Un participante tiene una bitácora
-User.hasOne(Bitacora, { as: "Bitacora", foreignKey: "participanteId" });
-Bitacora.belongsTo(User, {
-  as: "Participante",
-  foreignKey: "participanteId",
-});
 
 module.exports = {
   ...sequelize.models,
