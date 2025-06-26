@@ -1,17 +1,19 @@
+// utils/multer.js
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("./cloudinary");
 
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: "micromvp", // Carpeta en Cloudinary donde se guardarán
-    resource_type: "auto",       // Detecta automáticamente si es audio
-    allowed_formats: ["mp3", "wav", "m4a", "ogg", "webm"], // Formatos permitidos
-  },
-});
+const createUpload = (folderName = "spatherapp") => {
+  const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+      folder: folderName,
+      resource_type: "auto",
+      allowed_formats: ["jpg", "png", "pdf", "mp4", "docx", "mp3", "wav", "webm"],
+    },
+  });
 
-// console.log("📦 Multer y Cloudinary configurados para:", cloudinary.config().cloud_name);
-const upload = multer({ storage });
+  return multer({ storage });
+};
 
-module.exports = upload;
+module.exports = createUpload;

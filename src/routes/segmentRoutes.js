@@ -1,21 +1,18 @@
 const { Router } = require("express");
 const segmentController = require("../controllers/segmentController");
+const uploadSegmentFiles = require("../services/uploadSegmentFiles");
 
 const router = Router();
 
-// Crear un segmento
-router.post("/", segmentController.createSegment);
+// Cargar archivos y crear segmento
+router.post("/", uploadSegmentFiles, segmentController.createSegment);
 
-// Obtener todos los segmentos
+// Cargar archivos y actualizar segmento
+router.put("/:id", uploadSegmentFiles, segmentController.updateSegment);
+
+// Resto sin archivos
 router.get("/", segmentController.getAllSegments);
-
-// Obtener un segmento por ID
 router.get("/:id", segmentController.getSegmentById);
-
-// Actualizar un segmento
-router.put("/:id", segmentController.updateSegment);
-
-// Eliminar un segmento
 router.delete("/:id", segmentController.deleteSegment);
 
 module.exports = router;
