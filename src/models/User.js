@@ -54,13 +54,13 @@ module.exports = (sequelize) => {
       },
 
       eventId: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: "Events",
-          key: "id",
-        },
-      },
+  type: DataTypes.UUID,
+  allowNull: true,
+  references: {
+    model: "Events",
+    key: "id",
+  },
+}
     },
     {
       timestamps: true,

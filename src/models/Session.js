@@ -10,14 +10,13 @@ module.exports = (sequelize) => {
         autoIncrement: true,
         allowNull: false,
       },
-      eventId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Events",
-          key: "id",
-        },
-      },
+    eventId: {
+  type: DataTypes.UUID,
+  references: {
+    model: "Events",
+    key: "id",
+  },
+},
       name: {
         type: DataTypes.STRING,
         allowNull: false,

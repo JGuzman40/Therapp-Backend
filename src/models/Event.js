@@ -5,11 +5,10 @@ module.exports = (sequelize) => {
     "Event",
     {
       id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-      },
+  type: DataTypes.UUID,
+  defaultValue: DataTypes.UUIDV4,
+  primaryKey: true,
+},
       eventType: {
         type: DataTypes.ENUM(
           "Seminario",
@@ -33,17 +32,30 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       eventImage: {
-        type: DataTypes.STRING, // URL o path de la imagen
+        type: DataTypes.STRING,
         allowNull: true,
+        comment: "URL de imagen representativa del evento",
       },
       description: {
         type: DataTypes.TEXT,
         allowNull: true,
+        comment: "Descripción del evento",
+      },
+      startDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        comment: "Fecha de inicio del evento",
+      },
+      endDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        comment: "Fecha de finalización del evento",
       },
       isActive: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
         allowNull: false,
+        comment: "Determina si el evento está activo",
       },
     },
     {

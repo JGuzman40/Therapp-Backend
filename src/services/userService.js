@@ -87,7 +87,7 @@ const getParticipantesByEventService = async (eventId) => {
 
 
 const updateUserService = async (id, data) => {
-  const { name, password, email, imageUrl, isActive, role } = data;
+  const { name, password, email, imageUrl, isActive, role, adminId, eventId } = data;
 
   const user = await User.findByPk(id);
   if (!user) throw new Error("Usuario no encontrado");
@@ -102,6 +102,8 @@ const updateUserService = async (id, data) => {
   user.imageUrl = imageUrl || user.imageUrl;
   user.isActive = isActive !== undefined ? isActive : user.isActive;
   user.role = role || user.role;
+  user.adminId = adminId || null;
+  user.eventId = eventId || null;
 
   await user.save();
   return user;

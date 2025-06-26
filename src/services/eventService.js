@@ -1,8 +1,22 @@
-const { Event } = require("../db"); // Importamos el modelo de Evento
+const { Event } = require("../db");
 
 // Crear un evento
 const createEventService = async (data) => {
-  const { eventType, eventName, eventImage, isActive, description } = data;
+  const {
+    eventType,
+    eventName,
+    eventImage,
+    isActive = true,
+    description,
+    startDate,
+    endDate,
+    facilitadorId,
+  } = data;
+
+  // Validación básica (puedes expandir luego)
+  if (!facilitadorId) {
+    throw new Error("Debe especificarse el facilitadorId.");
+  }
 
   const newEvent = await Event.create({
     eventType,
@@ -10,6 +24,9 @@ const createEventService = async (data) => {
     eventImage,
     isActive,
     description,
+    startDate,
+    endDate,
+    facilitadorId,
   });
 
   return newEvent;
@@ -29,7 +46,15 @@ const getEventByIdService = async (id) => {
 
 // Actualizar un evento
 const updateEventService = async (id, data) => {
-  const { eventType, eventName, eventImage, isActive, description } = data;
+  const {
+    eventType,
+    eventName,
+    eventImage,
+    isActive,
+    description,
+    startDate,
+    endDate,
+  } = data;
 
   const event = await Event.findByPk(id);
   if (!event) throw new Error("Evento no encontrado");
@@ -39,6 +64,8 @@ const updateEventService = async (id, data) => {
   event.eventImage = eventImage || event.eventImage;
   event.isActive = isActive !== undefined ? isActive : event.isActive;
   event.description = description || event.description;
+  event.startDate = startDate || event.startDate;
+  event.endDate = endDate || event.endDate;
 
   await event.save();
   return event;
