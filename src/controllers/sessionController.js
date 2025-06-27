@@ -2,6 +2,7 @@ const {
   createSessionService,
   getAllSessionsService,
   getSessionByIdService,
+  getSessionsByEventIdService,
   updateSessionService,
   deleteSessionService,
 } = require("../services/sessionService");
@@ -29,6 +30,12 @@ const getSessionById = async (req, res) => {
   res.status(200).json(session);
 };
 
+const getSessionsByEventId = async (req, res) => {
+  const { eventId } = req.params;
+  const sessions = await getSessionsByEventIdService(eventId);
+  res.status(200).json(sessions);
+};
+
 // Actualizar una sesión
 const updateSession = async (req, res) => {
   const updatedSession = await updateSessionService(req.params.id, req.body);
@@ -48,6 +55,7 @@ module.exports = {
   createSession: catchAsync(createSession),
   getAllSessions: catchAsync(getAllSessions),
   getSessionById: catchAsync(getSessionById),
+  getSessionsByEventId: catchAsync(getSessionsByEventId),
   updateSession: catchAsync(updateSession),
   deleteSession: catchAsync(deleteSession),
 };

@@ -102,6 +102,12 @@ const getSessionByIdService = async (id) => {
   return session;
 };
 
+const getSessionsByEventIdService = async (eventId) => {
+  const sessions = await Session.findAll({ where: { eventId } });
+  return sessions;
+};
+
+
 // Actualizar sesión
 const updateSessionService = async (id, data) => {
   const session = await Session.findByPk(id);
@@ -207,6 +213,7 @@ module.exports = {
   createSessionService,
   getAllSessionsService,
   getSessionByIdService,
+  getSessionsByEventIdService,
   updateSessionService,
   deleteSessionService,
 };

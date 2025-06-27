@@ -1,24 +1,35 @@
-const jwt = require("jsonwebtoken");
 const { User } = require("../db");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
-const loginService = async (email, password) => {
+const loginService = async ({ email, password }) => {
   const user = await User.findOne({ where: { email } });
-  if (!user) throw new Error("Credenciales inválidas");
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) throw new Error("Credenciales inválidas");
+  if (!user || !user.isActive) {
+    throw new Error("Credenciales inválidas");
+  }
 
-  // Generar token JWT con información del usuario
+  const passwordMatch = await bcrypt.compare(password, user.password);
+  if (!passwordMatch) {
+    throw new Error("Credenciales inválidas");
+  }
+
   const token = jwt.sign(
-    { id: user.id, role: user.role }, // Información que queremos almacenar en el token
-    process.env.JWT_SECRET, // Clave secreta
-    { expiresIn: "1h" } // Expiración del token
+    { id: user.id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: "1d" }
   );
 
-  return { user, token }; // Devolvemos el usuario y el token
+  return {
+    token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+  };
 };
 
-module.exports = {
-  loginService,
-};
+
+module.exports = { loginService };

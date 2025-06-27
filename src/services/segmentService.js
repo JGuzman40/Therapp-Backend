@@ -31,6 +31,36 @@ const getSegmentByIdService = async (id) => {
   return segment;
 };
 
+const getSegmentsByEventIdService = async (eventId) => {
+  const segments = await Segment.findAll({ where: { eventId } });
+
+  // Transformar los archivos (array) en un objeto con URLs por tipo
+  const transformed = segments.map((segment) => {
+    const files = segment.files || [];
+
+    const urlsByType = {};
+    files.forEach((file) => {
+      const type = file.mimetype?.startsWith("audio")
+        ? "audioUrl"
+        : file.mimetype?.startsWith("image")
+        ? "imageUrl"
+        : file.mimetype?.startsWith("video")
+        ? "videoUrl"
+        : "documentUrl";
+
+      urlsByType[type] = file.url;
+    });
+
+    return {
+      ...segment.toJSON(),
+      ...urlsByType,
+    };
+  });
+
+  return transformed;
+};
+
+
 // Actualizar un segmento
 const updateSegmentService = async (id, data, uploadedFiles = []) => {
   const segment = await Segment.findByPk(id);
@@ -60,6 +90,7 @@ const deleteSegmentService = async (id) => {
 module.exports = {
   createSegmentService,
   getAllSegmentsService,
+  getSegmentsByEventIdService,
   getSegmentByIdService,
   updateSegmentService,
   deleteSegmentService,

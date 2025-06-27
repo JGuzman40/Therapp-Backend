@@ -4,15 +4,23 @@ const uploadSegmentFiles = require("../services/uploadSegmentFiles");
 
 const router = Router();
 
-// Cargar archivos y crear segmento
+// Crear segmento
 router.post("/", uploadSegmentFiles, segmentController.createSegment);
 
-// Cargar archivos y actualizar segmento
+// ✅ ESTA debe ir antes de /:id
+router.get("/event/:eventId", segmentController.getSegmentsByEventId);
+
+// Actualizar segmento
 router.put("/:id", uploadSegmentFiles, segmentController.updateSegment);
 
-// Resto sin archivos
+// Obtener todos
 router.get("/", segmentController.getAllSegments);
+
+// Obtener uno por ID
 router.get("/:id", segmentController.getSegmentById);
+
+// Eliminar
 router.delete("/:id", segmentController.deleteSegment);
+
 
 module.exports = router;

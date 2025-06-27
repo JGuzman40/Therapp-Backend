@@ -2,6 +2,7 @@ const {
   createSegmentService,
   getAllSegmentsService,
   getSegmentByIdService,
+  getSegmentsByEventIdService,
   updateSegmentService,
   deleteSegmentService,
 } = require("../services/segmentService");
@@ -40,6 +41,16 @@ const getSegmentById = async (req, res) => {
   const segment = await getSegmentByIdService(req.params.id);
   res.status(200).json(segment);
 };
+const getSegmentsByEventId = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const segments = await getSegmentsByEventIdService(eventId);
+    res.status(200).json(segments);
+  } catch (error) {
+    console.error("Error en getSegmentsByEventId:", error);
+    res.status(500).json({ message: "Error al obtener los segmentos del evento" });
+  }
+};
 
 // 🟢 Actualizar un segmento con posibles archivos nuevos
 const updateSegment = async (req, res) => {
@@ -61,6 +72,7 @@ module.exports = {
   createSegment: catchAsync(createSegment),
   getAllSegments: catchAsync(getAllSegments),
   getSegmentById: catchAsync(getSegmentById),
+  getSegmentsByEventId: catchAsync(getSegmentsByEventId),
   updateSegment: catchAsync(updateSegment),
   deleteSegment: catchAsync(deleteSegment),
 };

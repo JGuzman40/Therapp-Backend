@@ -43,7 +43,19 @@ const getEventByIdService = async (id) => {
   if (!event) throw new Error("Evento no encontrado");
   return event;
 };
-
+// Obtener eventos por facilitador
+const getEventsByFacilitadorService = async (facilitadorId) => {
+  return await Event.findAll({
+    where: {
+      facilitadorId,
+      isActive: true,
+    },
+  });
+};
+const getEventTypesService = async () => {
+  const enumValues = Event.rawAttributes.eventType.values;
+  return enumValues;
+};
 // Actualizar un evento
 const updateEventService = async (id, data) => {
   const {
@@ -84,6 +96,8 @@ module.exports = {
   createEventService,
   getAllEventsService,
   getEventByIdService,
+  getEventsByFacilitadorService,
+  getEventTypesService,
   updateEventService,
   deleteEventService,
 };

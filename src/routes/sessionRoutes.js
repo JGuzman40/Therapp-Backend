@@ -3,10 +3,11 @@ const sessionController = require("../controllers/sessionController");
 
 const router = Router();
 
-router.post("/", sessionController.createSession); // Crear una sesión
-router.get("/", sessionController.getAllSessions); // Obtener todas las sesiones
-router.get("/:id", sessionController.getSessionById); // Obtener una sesión por ID
-router.put("/:id", sessionController.updateSession); // Actualizar una sesión
-router.delete("/:id", sessionController.deleteSession); // Eliminar una sesión
+router.post("/", sessionController.createSession);
+router.get("/event/:eventId", sessionController.getSessionsByEventId); // 🔹 Nueva
+router.get("/", sessionController.getAllSessions);
+router.get("/:id", sessionController.getSessionById);
+router.put("/:id", sessionController.updateSession);
+router.delete("/:id", sessionController.deleteSession);
 
 module.exports = router;

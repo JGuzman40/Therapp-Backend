@@ -85,6 +85,17 @@ const getParticipantesByEventService = async (eventId) => {
   return participantes;
 };
 
+const getParticipantsByEventIdService = async (eventId) => {
+  const participants = await User.findAll({
+    where: {
+      eventId,
+      role: "participante",
+      isActive: true
+    },
+    attributes: ["id", "name", "email"]
+  });
+  return participants;
+}; 
 
 const updateUserService = async (id, data) => {
   const { name, password, email, imageUrl, isActive, role, adminId, eventId } = data;
@@ -122,6 +133,7 @@ module.exports = {
   getUserByIdService,
   getFacilitadoresByAdminService,
   getParticipantesByEventService,
+  getParticipantsByEventIdService,
   updateUserService,
   deleteUserService,
 };

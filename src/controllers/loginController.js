@@ -3,7 +3,7 @@ const catchAsync = require("../utils/catchAsync");
 
 const loginController = async (req, res) => {
   const { email, password } = req.body;
-  const { user, token } = await loginService(email, password); // Recibes el token del servicio
+  const { user, token } = await loginService({ email, password }); // Recibes el token del servicio
 
   // Redirigir según el rol
   let redirectUrl = "";
